@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: MEDIA-SERVICE
+  datasource:
+    password: 1234
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/ecommerce-media
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+      use-new-id-generator-mappings: true
+    generate-ddl: true
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 9001
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:5000/eureka
+  instance:
+    hostname: localhost
+    prefer-ip-address: true

@@ -1,0 +1,32 @@
+
+server:
+  port: 8080
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:5000/eureka
+  instance:
+    hostname: localhost
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: EDGE-SERVICE
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedMethods:
+              - GET
+      routes:
+        - id: SECURITY
+          uri: lb://SECURITY
+          predicates:
+            - Path=/auth/**
+        - id: PRODUCTS-SERVICE
+          uri: lb://PRODUCTS-SERVICE
+          predicates:
+            - Path=/products/**
+            - Path=/categories/**

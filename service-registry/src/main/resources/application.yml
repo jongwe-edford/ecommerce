@@ -1,0 +1,10 @@
+server:
+  port: 5000
+
+spring:
+  application:
+    name: SERVICE-REGISTRY
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
