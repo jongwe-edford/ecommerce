@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(
-        name = "tags", indexes = {
+        name = "product_logs", indexes = {
         @Index(name = "idx_tag_id", columnList = "id")}
 )
 @AllArgsConstructor

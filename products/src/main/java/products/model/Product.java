@@ -2,7 +2,6 @@ package products.model;
 
 import lombok.*;
 
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_id_sequence_generator")
     @SequenceGenerator(sequenceName = "product_id_sequence", name = "product_id_sequence_generator")
     private long id;
-    private Long vendorId;
+    private int vendorId;
     private String name;
     @OneToOne
     private Category category;
@@ -34,6 +33,8 @@ public class Product {
     @ElementCollection
     private List<String> colors;
     private double price;
+    private float discount;
+    private boolean onDiscount;
     private long timeViewed;
     private long timePurchased;
     private long total;

@@ -16,12 +16,15 @@ public class GatewayConfig {
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder
                 .routes()
-                .route("auth", r -> r.path("/auth/**")
+                .route("auth", r -> r.path("/auth/**", "/vendor/**", "/customer/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://SECURITY"))
                 .route("products", r -> r.path("/products/**", "/categories/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://PRODUCTS-SERVICE"))
+                .route("discounts", r -> r.path("/discounts/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://DISCOUNT-PROMOTION-SERVICE"))
                 .build();
     }
 

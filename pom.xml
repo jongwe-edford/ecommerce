@@ -10,6 +10,7 @@
         <module>orders</module>
         <module>gateway</module>
         <module>service-registry</module>
+        <module>discount_and_promotions</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

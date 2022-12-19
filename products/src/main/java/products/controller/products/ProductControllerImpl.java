@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import products.exception.PriceMismatchException;
 import products.model.Product;
 import products.service.ProductLogService;
 import products.service.ProductService;
@@ -23,8 +24,9 @@ public class ProductControllerImpl implements ProductController {
     @PostMapping(path = "create")
     public ResponseEntity<Product> createProduct(
             @RequestPart(value = "product") Product product,
-            @RequestPart(value = "images") MultipartFile[] multipartFiles) {
-        return new ResponseEntity<>(productService.saveProduct(product, multipartFiles), HttpStatus.CREATED);
+            @RequestPart(value = "images") MultipartFile[] multipartFiles,
+            HttpServletRequest request) {
+        return new ResponseEntity<>(productService.saveProduct(product, multipartFiles, request), HttpStatus.CREATED);
     }
 
     @Override
@@ -51,8 +53,17 @@ public class ProductControllerImpl implements ProductController {
 
     @Override
     @GetMapping(path = "all/{productId}")
-    public ResponseEntity<List<Product>> findAllProductsByShopId(@PathVariable(value = "productId") Long shopId, HttpServletRequest request) {
+    public ResponseEntity<List<Product>> findAllProductsByShopId(@PathVariable(value = "productId") int shopId, HttpServletRequest request) {
         return ResponseEntity.ok(productService.allProductsByShopId(shopId, request));
+    }
+
+    @GetMapping(path = "/update/discount/{id}")
+    @Override
+    public ResponseEntity<Integer> updateProductDiscountStatus(
+            @PathVariable(value = "id") long id,
+            @RequestParam("status") boolean status,
+            @RequestParam("amount") float amount) throws PriceMismatchException {
+        return new ResponseEntity<>(productService.updateProductDiscountStatus(id, status, amount), HttpStatus.OK);
     }
 
 }

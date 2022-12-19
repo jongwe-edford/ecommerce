@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Flux;
 
 public interface WishlistRepository extends ReactiveMongoRepository<Wishlist, String> {
-    Flux<Wishlist> findAllByEmail(String email);
+    Flux<Wishlist> findAllByCustomerId(String id);
 
-    void deleteAllByEmail(String email);
+    void deleteAllByCustomerId(String id);
 }

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import products.exception.PriceMismatchException;
 import products.model.Product;
+import products.model.Response;
 import products.model.User;
 import products.repository.ProductRepository;
 import products.service.ProductLogService;
@@ -31,8 +33,11 @@ public class ProductServiceImpl implements ProductService {
     private final ProductLogService productLogService;
 
     @Override
-    public Product saveProduct(Product product, MultipartFile[] multipartFiles) {
+    public Product saveProduct(Product product, MultipartFile[] multipartFiles, HttpServletRequest request) {
+        Response responseEntity = restTemplate.getForObject("http://SECURITY/vendor/id?token=" + request.getHeader("Authorization").substring(7), Response.class);
+        System.out.println("Current vendor id: " + Objects.requireNonNull(responseEntity).data().get("id"));
 
+        product.setVendorId((int) responseEntity.data().get("id"));
         Product before = productRepository.save(product);
         String postUrl = "http://MEDIA-SERVICE/media/images/products/c/" + before.getId();
         // multipart form body
@@ -76,11 +81,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> allProductsByShopId(Long shopId, HttpServletRequest request) {
+    public List<Product> allProductsByShopId(int shopId, HttpServletRequest request) {
+        System.out.println("Authorization header " + request.getHeader("Authorization"));
         String token = request.getHeader("Authorization").substring(7);
         String getUrl = "http://SECURITY/auth/current-user?token=" + token;
-        System.out.println("Url::"+getUrl);
-        System.out.println("Token::"+token);
+        System.out.println("Url::" + getUrl);
+        System.out.println("Token::" + token);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", request.getHeader("Authorization"));
         ResponseEntity<User> userResponseEntity = restTemplate.getForEntity(getUrl, User.class, httpHeaders);
@@ -91,6 +97,13 @@ public class ProductServiceImpl implements ProductService {
             product.setImages(getProductImagesFromMediaService(product.getId()));
         }
         return products;
+    }
+
+    @Override
+    public int updateProductDiscountStatus(long id, boolean status, float amount) throws PriceMismatchException {
+        if (amount >= productRepository.findProductById(id).getPrice())
+            throw new PriceMismatchException("Discount value cannot be more than the actual price");
+        return productRepository.updateProductDiscountStatus(id, status, amount);
     }
 
 

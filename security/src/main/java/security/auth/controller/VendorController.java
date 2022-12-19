@@ -23,8 +23,12 @@ public class VendorController {
     private final VendorService vendorService;
 
     @PostMapping("create")
-    public ResponseEntity<Response> createVendorAccount(@RequestPart("vendor") VendorRegistrationRequest vendorRegistrationRequest, HttpServletRequest httpServletRequest,@RequestPart("file") MultipartFile file) throws VendorAlreadyExistsException, PhoneNumberAlreadyInUseException, VendorAlreadyExistsException, PhoneNumberAlreadyInUseException {
-        return new ResponseEntity<>(vendorService.registerVendor(vendorRegistrationRequest, httpServletRequest,file), HttpStatus.CREATED);
+    public ResponseEntity<Response> createVendorAccount(
+            @RequestPart("vendor") VendorRegistrationRequest vendorRegistrationRequest,
+            HttpServletRequest httpServletRequest,
+            @RequestHeader("Authorization") String token,
+            @RequestPart("file") MultipartFile file) throws VendorAlreadyExistsException, PhoneNumberAlreadyInUseException {
+        return new ResponseEntity<>(vendorService.registerVendor(vendorRegistrationRequest, httpServletRequest, token, file), HttpStatus.CREATED);
     }
 
     @PatchMapping("update")
@@ -33,8 +37,14 @@ public class VendorController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Response> retrieveVendorInfo() throws VendorNotFoundException {
-        return new ResponseEntity<>(vendorService.retrieveVendorInfo(), HttpStatus.OK);
+    public ResponseEntity<Response> retrieveVendorInfo(@RequestHeader("Authorization") String token) throws VendorNotFoundException {
+        return new ResponseEntity<>(vendorService.retrieveVendorInfo(token), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/id")
+    public ResponseEntity<Response> retrieveVendorId(@RequestParam("token") String  token) throws VendorNotFoundException {
+        return new ResponseEntity<>(vendorService.getVendorId(token), HttpStatus.OK);
     }
 
 }

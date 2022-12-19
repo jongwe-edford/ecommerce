@@ -11,10 +11,16 @@ import java.util.List;
 @Transactional
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    List<Product> findAllByVendorId(Long shopId);
+    List<Product> findAllByVendorId(int shopId);
+
+    Product findProductById(long id);
 
     @Modifying
     @Query("UPDATE  Product p set p.images=?2 where p.id=?1")
     void updateProductImages(long id, List<String> images);
+
+    @Modifying
+    @Query("UPDATE  Product p set p.onDiscount=?2 ,p.discount=?3 where p.id=?1")
+    int updateProductDiscountStatus(long productId, boolean status, float amount);
 
 }

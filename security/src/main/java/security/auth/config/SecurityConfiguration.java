@@ -44,7 +44,7 @@ public class SecurityConfiguration {
      public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
           http.cors().and().csrf().disable()
                   .authorizeHttpRequests()
-                  .antMatchers("/auth/**").permitAll()
+                  .antMatchers("/auth/**","/vendor/**").permitAll()
                   .anyRequest().authenticated()
                   .and()
                   .addFilterBefore(authenticationJwtTokenFilter,UsernamePasswordAuthenticationFilter.class)

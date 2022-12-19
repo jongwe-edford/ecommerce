@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Document(collection = "wishlist")
 @AllArgsConstructor
@@ -20,7 +20,8 @@ public class Wishlist {
     @MongoId(value = FieldType.INT64)
     @Id
     private String id;
-    private String email;
+    private String customerId;
     private long productId;
-    private LocalDate timestamp;
+    private Instant addedOn;
+
 }

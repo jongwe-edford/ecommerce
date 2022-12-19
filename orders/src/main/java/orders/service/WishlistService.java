@@ -4,10 +4,12 @@ import orders.model.Wishlist;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface WishlistService {
-    Flux<Wishlist> findAllByEmail(String email);
+    Flux<Wishlist> findAllProductsByCustomerId(String email, HttpServletRequest httpServletRequest);
 
-    Mono<Wishlist> addProductToWishlist(long productId, String authorizationHeader);
+    Mono<String> addProductToWishlist(long productId,  HttpServletRequest httpServletRequest);
 
-    void deleteAllByEmail(String email);
+    Mono<Void> deleteAllByEmail(String email, HttpServletRequest httpServletRequest);
 }
