@@ -25,6 +25,12 @@ public class GatewayConfig {
                 .route("discounts", r -> r.path("/discounts/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://DISCOUNT-PROMOTION-SERVICE"))
+                .route("wishlist", r -> r.path("/wishlist/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://WISHLIST-SERVICE"))
+                .route("orders", r -> r.path("/orders/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://ORDERS-SERVICE"))
                 .build();
     }
 

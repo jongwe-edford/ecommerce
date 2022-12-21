@@ -1,5 +1,5 @@
 server:
-  port: 9012
+  port: 9005
 eureka:
   client:
     service-url:
@@ -9,14 +9,14 @@ eureka:
     prefer-ip-address: true
 spring:
   application:
-    name: ORDERS-SERVICE
+    name: WISHLIST-SERVICE
   data:
     mongodb:
       database: ecommerce-orders
       password: password
       host: localhost
       port: 27017
-      uri: mongodb://localhost:27017/ecommerce-orders
+      uri: mongodb://localhost:27017/ecommerce-wishlist
       username: root
 
   servlet:

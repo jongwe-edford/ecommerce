@@ -1,11 +1,11 @@
-package orders.payload;
+package wishlist.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import orders.model.Product;
-import orders.model.User;
+import wishlist.model.Product;
+import wishlist.model.User;
 
 @Builder
 @NoArgsConstructor

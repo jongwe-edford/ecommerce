@@ -1,4 +1,4 @@
-package orders.model;
+package wishlist.model;
 
 import lombok.*;
 
