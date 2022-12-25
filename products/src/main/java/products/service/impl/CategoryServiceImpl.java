@@ -46,8 +46,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private String saveImageToDb(MultipartFile file, long categoryId) {
-        String postUrl = "http://MEDIA-SERVICE/media/images/category/save?categoryId={categoryId}";
-        String getUrl = "http://MEDIA-SERVICE/media/images/category/c?categoryId=" + categoryId;
+        String postUrl = "https://MEDIA-SERVICE/media/images/category/save?categoryId={categoryId}";
+        String getUrl = "https://MEDIA-SERVICE/media/images/category/c?categoryId=" + categoryId;
 
         //Headers
         HttpHeaders headers = new HttpHeaders();

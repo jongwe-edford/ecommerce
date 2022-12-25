@@ -55,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Response retrieveCustomer() throws VendorNotFoundException {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Customer vendor = customerRepository.findCustomerByEmail(userDetails.getUsername()).orElseThrow(() -> new VendorNotFoundException("No such account exists"));
-        return new Response("Information retrieved successfully", Map.of("vendor", vendor), LocalDateTime.now());
+        return new Response("Information retrieved successfully", Map.of("customer", vendor), LocalDateTime.now());
     }
 
     @Override

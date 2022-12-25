@@ -27,7 +27,7 @@ public class WishlistServiceImpl implements WishlistService {
     public Flux<Wishlist> findAllProductsByCustomerId(HttpServletRequest httpServletRequest) {
         System.out.println("Authorization header " + httpServletRequest.getHeader("Authorization"));
         String token = httpServletRequest.getHeader("Authorization").substring(7);
-        String getUrl = "http://SECURITY/auth/current-user?token=" + token;
+        String getUrl = "https://SECURITY/auth/current-user?token=" + token;
         ResponseEntity<User> userResponseEntity = restTemplate.getForEntity(getUrl, User.class);
 
         return wishlistRepository.findAllByCustomerId(String.valueOf(Objects.requireNonNull(userResponseEntity.getBody()).getEmail()));
@@ -37,7 +37,7 @@ public class WishlistServiceImpl implements WishlistService {
     public Mono<Wishlist> addProductToWishlist(long productId, HttpServletRequest httpServletRequest) throws AlreadyInWishlist {
         System.out.println("Authorization header " + httpServletRequest.getHeader("Authorization"));
         String token = httpServletRequest.getHeader("Authorization").substring(7);
-        String getUrl = "http://SECURITY/auth/current-user?token=" + token;
+        String getUrl = "https://SECURITY/auth/current-user?token=" + token;
         ResponseEntity<User> userResponseEntity = restTemplate.getForEntity(getUrl, User.class);
         Wishlist wishlist = Wishlist
                 .builder()
@@ -55,7 +55,7 @@ public class WishlistServiceImpl implements WishlistService {
     public Mono<Void> deleteAllByEmail(HttpServletRequest httpServletRequest) {
         System.out.println("Authorization header " + httpServletRequest.getHeader("Authorization"));
         String token = httpServletRequest.getHeader("Authorization").substring(7);
-        String getUrl = "http://SECURITY/auth/current-user?token=" + token;
+        String getUrl = "https://SECURITY/auth/current-user?token=" + token;
         ResponseEntity<User> userResponseEntity = restTemplate.getForEntity(getUrl, User.class);
         wishlistRepository.deleteAllByCustomerId(Objects.requireNonNull(userResponseEntity.getBody()).getEmail());
         return Mono.empty();

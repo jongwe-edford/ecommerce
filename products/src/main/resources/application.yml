@@ -1,9 +1,15 @@
 server:
   port: 9002
+  ssl:
+    key-alias: products
+    key-password: password
+    key-store-password: password
+    key-store-type: pkcs12
+    key-store: classpath:products.pfx
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:5000/eureka
+      defaultZone: https://localhost:5000/eureka
   instance:
     hostname: localhost
     prefer-ip-address: true

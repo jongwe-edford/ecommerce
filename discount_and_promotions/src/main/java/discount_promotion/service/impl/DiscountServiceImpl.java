@@ -29,8 +29,8 @@ public class DiscountServiceImpl implements DiscountService {
                 .build();
         repository.save(newDiscount);
         //:Todo update  product info and set on discount true
-        String getUrl = "http://PRODUCTS-SERVICE/products/update/discount/" + productId + "?status=" + true + "&amount=" + amount;
-        Integer userResponseEntity = restTemplate.getForObject(getUrl, Integer.class);
+        String getUrl = "https://PRODUCTS-SERVICE/products/update/discount/" + productId + "?status=" + true + "&amount=" + amount;
+        restTemplate.getForObject(getUrl, Integer.class);
 
     }
 

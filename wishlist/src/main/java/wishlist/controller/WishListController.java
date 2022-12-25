@@ -5,17 +5,20 @@
 package wishlist.controller;
 
 import lombok.AllArgsConstructor;
-import wishlist.exception.AlreadyInWishlist;
-import wishlist.model.Wishlist;
-import wishlist.service.WishlistService;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import wishlist.exception.AlreadyInWishlist;
+import wishlist.model.Wishlist;
+import wishlist.service.WishlistService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping(path = "wishlist")
@@ -36,7 +39,12 @@ public class WishListController {
 
     @DeleteMapping(path = "delete")
     public ResponseEntity<Mono<Void>> deleteAllProductsFromWishlist(HttpServletRequest servletRequest) {
-        return ResponseEntity.ok(wishlistService.deleteAllByEmail(servletRequest));
+        return ResponseEntity
+                .ok()
+                .cacheControl(CacheControl.maxAge(30, TimeUnit.DAYS))
+                .lastModified(Instant.now())
+                .body(wishlistService.deleteAllByEmail(servletRequest));
+
     }
 
     @DeleteMapping(path = "delete/{id}")

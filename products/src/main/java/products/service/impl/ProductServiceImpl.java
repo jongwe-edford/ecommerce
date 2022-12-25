@@ -17,7 +17,6 @@ import products.model.User;
 import products.repository.ProductRepository;
 import products.service.ProductLogService;
 import products.service.ProductService;
-import products.service.ReviewService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -29,17 +28,16 @@ import java.util.Objects;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final RestTemplate restTemplate;
-    private final ReviewService reviewService;
     private final ProductLogService productLogService;
 
     @Override
     public Product saveProduct(Product product, MultipartFile[] multipartFiles, HttpServletRequest request) {
-        Response responseEntity = restTemplate.getForObject("http://SECURITY/vendor/id?token=" + request.getHeader("Authorization").substring(7), Response.class);
+        Response responseEntity = restTemplate.getForObject("https://SECURITY/vendor/id?token=" + request.getHeader("Authorization").substring(7), Response.class);
         System.out.println("Current vendor id: " + Objects.requireNonNull(responseEntity).data().get("id"));
 
         product.setVendorId((int) responseEntity.data().get("id"));
         Product before = productRepository.save(product);
-        String postUrl = "http://MEDIA-SERVICE/media/images/products/c/" + before.getId();
+        String postUrl = "https://MEDIA-SERVICE/media/images/products/c/" + before.getId();
         // multipart form body
         LinkedMultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
         for (MultipartFile file : multipartFiles) {
@@ -84,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> allProductsByShopId(int shopId, HttpServletRequest request) {
         System.out.println("Authorization header " + request.getHeader("Authorization"));
         String token = request.getHeader("Authorization").substring(7);
-        String getUrl = "http://SECURITY/auth/current-user?token=" + token;
+        String getUrl = "https://SECURITY/auth/current-user?token=" + token;
         System.out.println("Url::" + getUrl);
         System.out.println("Token::" + token);
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -109,11 +107,11 @@ public class ProductServiceImpl implements ProductService {
 
     private List<String> getProductImagesFromMediaService(Long productId) {
 
-        String getUrl = "http://MEDIA-SERVICE/media/images/products/{id}";
+        String getUrl = "https://MEDIA-SERVICE/media/images/products/{id}";
 
         ResponseEntity<String[]> images = restTemplate.getForEntity(getUrl, String[].class, productId);
         List<String> imagesList = Arrays.asList(Objects.requireNonNull(images.getBody()));
-        System.out.println("Images list::" + imagesList.toString());
+        System.out.println("Images list::" + imagesList);
 //        productRepository.updateProductImages(before.getId(), imagesList);
         return imagesList;
     }
