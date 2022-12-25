@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface CustomerService {
     Response saveCustomer(CustomerRegistrationRequest registrationRequest, HttpServletRequest servletRequest) throws VendorAlreadyExistsException, PhoneNumberAlreadyInUseException, PhoneNumberAlreadyInUseException;
-     Response retrieveCustomer() throws VendorNotFoundException;
-     Response updateCustomerInfo(CustomerUpdateRequest updateRequest) throws VendorNotFoundException;
+
+    Response retrieveCustomer() throws VendorNotFoundException;
+
+    Response updateCustomerInfo(CustomerUpdateRequest updateRequest) throws VendorNotFoundException;
 }

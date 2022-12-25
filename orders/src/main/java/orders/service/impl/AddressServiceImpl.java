@@ -86,7 +86,7 @@ public class AddressServiceImpl implements AddressService {
 
     }
 
-    private User getUser(HttpServletRequest httpServletRequest) {
+    public User getUser(HttpServletRequest httpServletRequest) {
         System.out.println("Authorization header " + httpServletRequest.getHeader("Authorization"));
         String token = httpServletRequest.getHeader("Authorization").substring(7);
         String getUrl = "http://SECURITY/auth/current-user?token=" + token;

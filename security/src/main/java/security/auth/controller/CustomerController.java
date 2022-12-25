@@ -27,7 +27,8 @@ public class CustomerController {
 
 
     @PostMapping(path = "create")
-    public ResponseEntity<Response> saveCustomer(CustomerRegistrationRequest customerRegistrationRequest, HttpServletRequest httpServletRequest) throws VendorAlreadyExistsException, PhoneNumberAlreadyInUseException {
+    public ResponseEntity<Response> saveCustomer(@RequestBody CustomerRegistrationRequest customerRegistrationRequest,
+                                                 HttpServletRequest httpServletRequest) throws VendorAlreadyExistsException, PhoneNumberAlreadyInUseException {
         return new ResponseEntity<>(customerService.saveCustomer(customerRegistrationRequest, httpServletRequest), HttpStatus.OK);
     }
 

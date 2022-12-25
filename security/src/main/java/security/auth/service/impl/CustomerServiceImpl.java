@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import security.auth.config.JwtUtil;
 import security.auth.exception.PhoneNumberAlreadyInUseException;
 import security.auth.exception.UserNotFoundException;
 import security.auth.exception.VendorAlreadyExistsException;
@@ -26,20 +27,25 @@ import java.util.Map;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     @Override
     public Response saveCustomer(CustomerRegistrationRequest registrationRequest, HttpServletRequest servletRequest) throws VendorAlreadyExistsException, PhoneNumberAlreadyInUseException {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (customerRepository.existsByEmail(userDetails.getUsername()))
+
+        String authToken = servletRequest.getHeader("Authorization").substring(7);
+        String email = jwtUtil.getEmailFromToken(authToken);
+        System.out.println("The email is: " + email);
+        if (customerRepository.existsByEmail(email))
             throw new VendorAlreadyExistsException("The provided email is already in use by another account");
         if (customerRepository.existsByPhoneNumber(registrationRequest.getPhoneNumber()))
             throw new PhoneNumberAlreadyInUseException("The provided phone number is already in use by another account");
-        User user = userRepository.findUserByEmail(userDetails.getUsername()).orElseThrow(() -> new UserNotFoundException("No account exist"));
+
+        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException("No account found"));
 
         Customer customer = customerRepository.save(Customer
                 .builder()
                 .address(registrationRequest.getAddress())
-                .email(userDetails.getUsername())
+                .email(email)
                 .country(servletRequest.getLocale().getDisplayCountry())
                 .dob(registrationRequest.getDob())
                 .firstname(registrationRequest.getFirstname())

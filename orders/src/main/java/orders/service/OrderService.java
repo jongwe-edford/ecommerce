@@ -14,9 +14,7 @@ import java.util.List;
 public interface OrderService {
     String createOrder(
             HttpServletRequest httpServletRequest,
-            Long productId, int quantity,
-            PaymentMethod paymentMethod,
-            double amount);
+            Long productId,int quantity,double amount);
 
     List<Order> getAllCustomerOrders(HttpServletRequest httpServletRequest);
 

@@ -1,11 +1,5 @@
 server:
   port: 5000
-  ssl:
-    key-alias: sb2-recipes
-    key-password: password
-    key-store-password: password
-    key-store-type: pkcs12
-    key-store: classpath:sb2-recipes.pfx
 
 spring:
   application:

@@ -6,6 +6,7 @@ package orders.service;
 
 import orders.exception.NotFoundException;
 import orders.model.Address;
+import orders.model.User;
 import orders.payload.request.NewAddressRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,4 +23,6 @@ public interface AddressService {
     void deleteAddress(long id);
 
     void setDefaultAddress(long id, HttpServletRequest servletRequest) throws NotFoundException;
+
+    User getUser(HttpServletRequest httpServletRequest);
 }

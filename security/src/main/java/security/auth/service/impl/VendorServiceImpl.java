@@ -29,7 +29,6 @@ import security.auth.service.VendorService;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -79,7 +78,7 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public Response retrieveVendorInfo(String token) throws VendorNotFoundException {
+    public Response retrieveVendorInfo(String token) {
         String authToken = token.substring(7);
         String email = jwtUtil.getEmailFromToken(authToken);
         System.out.println("The email is: " + email);

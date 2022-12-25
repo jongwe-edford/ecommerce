@@ -2,7 +2,10 @@ package orders.model.product;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import java.util.List;
 
 
@@ -11,6 +14,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
+@ToString
 public class Product {
     private long id;
     private int vendorId;
